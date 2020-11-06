@@ -1,0 +1,642 @@
+﻿<DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="jquery-2.1.4.js"></script>
+	<script lang="javascript" src="xlsx.full.min.js"></script>
+	<script lang="javascript" src="FileSaver.min.js"></script>
+	<style>
+		tr:hover {background-color:#f5f5f5;}
+	</style>
+	
+	<title>Cable counting</title>
+	
+	<div id="navbar"><span>Импорт таблицы</span></div>
+	<input type="file" id="input-excel" />
+
+	
+</head>
+<body style="margin: 30;">
+
+<h2 align="center">ХАРАКТЕРИСТИКИ ОБЪЕКТА</h2>
+
+<table style="text-align: center;" align="center" id="table_3" border="1" >
+	<tr>
+		<th style="width: 150px;">Название<br>помещения</th>
+		<th style="width: 98px;">Номер<br>помещения</th>
+		<th style="width: 98px;">Площадь<br>помещения, м2</th>
+		<th style="width: 98px;">Координата<br>Х</th>
+		<th style="width: 98px;">Координата<br>У</th>
+		<th style="width: 98px;">Координата<br>У трассы</th>
+		<th style="width: 98px;">Высота,<br>м</th>
+		<th style="width: 98px;">Кол- во розеток RJ45</th>
+		<th style="width: 98px;">Кол- во розеток 2xRJ45</th>
+		<th style="width: 98px;">Кол- во розеток TV</th>
+		<th style="width: 98px;">Кол- во точек доступа</th>
+		<th style="width: 150x;">Шкаф СКС</th>
+	</tr>
+  
+  
+</table>
+<h4 align="center">ВВОД ДАННЫХ</h3>
+<table align="center" id="table_4" border="1">
+	<tr>
+		<th style="width: 112px;">Название<br>помещения</th>
+		<th style="width: 112px;">Номер<br>помещения</th>
+		<th style="width: 112px;">Площадь<br>помещения, м2</th>
+		<th style="width: 112px;">Координата<br>Х</th>
+		<th style="width: 112px;">Координата<br>У</th>
+		<th style="width: 112px;">Координата<br>У трассы</th>
+		<th style="width: 112px;">Высота,<br>м</th>
+		<th style="width: 112px;">Кол- во розеток RJ45</th>
+		<th style="width: 112px;">Кол- во розеток 2xRJ45</th>
+		<th style="width: 112px;">Кол- во розеток TV</th>
+		<th style="width: 112px;">Кол- во точек доступа</th>
+		<th style="width: 112px;">Шкаф СКС</th>
+	</tr>
+	<tr>
+		<td><input type="text" style="text-align: center;" name="Название помещения" value="-" size="18" id="parametr_t31"></input></td>
+		<td><input type="text" style="text-align: center;" name="Номер помещения" size="18" id="parametr_t32"></input></td>
+		<td><input type="number" step="0.1" style="width: 100px; text-align: center;" name="Площадь помещения"value=0 size="12" id="parametr_t33"></input></td>
+		<td><input type="number" step="0.1" step="0.1" style="width: 100px; text-align: center;" name="Коор. X" value=0 size="12" id="parametr_t34"></input></td>
+		<td><input type="number" step="0.1" style="width: 100px; text-align: center;" name="Коор. Y" value=0 size="12" id="parametr_t35"></input></td>
+		<td><input type="number" step="0.1" style="width: 100px; text-align: center;" name="Коор. Y Трассы" value=0 size="12" id="parametr_t36"></input></td>
+		<td><input type="number" step="0.1" style="width: 100px; text-align: center;" name="Высота" value=0 size="12" id="parametr_t37"></input></td>
+		<td><input type="number" style="width: 100px; text-align: center;" name="Кол-во RJ45" value=0 size="12" id="parametr_t38"></input></td>
+		<td><input type="number" style="width: 100px; text-align: center;" name="Кол-во 2xRJ45" value=0 size="12" id="parametr_t39"></input></td>
+		<td><input type="number" style="width: 100px; text-align: center;" name="Кол-во TV" value=0 size="12" id="parametr_t310"></input></td>
+		<td><input type="number" style="width: 100px; text-align: center;" name="Кол-во WIFI" value=0 size="12" id="parametr_t311"></input></td>
+		<td><select style="width: 120px; text-align: center;" id="parametr_312"></select></td>
+	</tr>
+</table>
+<br>
+<div align="center">
+<button onclick="add_rowt3()">ДОБАВИТЬ</button><button onclick="editHtmlTbleSelectedRowt3()">РЕДАКТИРОВАТЬ</button><button onclick="deleteRowt3()">УДАЛИТЬ</button><br><br><button onclick="cable_count()">РАСЧЕТ</button><br>
+</div>
+<br><br>
+
+
+    <h3 align="center">
+        КАБЕЛЬНЫЙ ЖУРНАЛ</h2>
+        <table style="text-align: center;" align="center" id="table_1" border="1">
+            <tr>
+                <th rowspan="3">№ Кабеля</th>
+                <th colspan="8">Трасса</th>
+                <th colspan="2" rowspan="2">Кабель</th>
+
+            </tr>
+            <tr>
+                <th colspan="4">Начало трассы</th>
+                <th colspan="4">Конец трассы</th>
+            </tr>
+            <tr>
+                <th>Помещение</th>
+                <th>Точка</th>
+                <th>Вывод</th>
+                <th>Выпуск, м</th>
+                <th>Помещение</th>
+                <th>Точка</th>
+                <th>Вывод</th>
+                <th>Выпуск, м</th>
+                <th>Марка</th>
+                <th>Длина, м</th>
+            </tr>
+        </table><br>
+        <center>Общая длина витой пары: <b id="comLengthUN"></b> м</center><br>
+        <center>Общая длина телевизионного кабеля: <b id="comLengthGN"></b> м</center><br>
+        </div>
+
+
+
+
+        <script>
+
+            ////////////////////////////////////////////////////////////////////////////////////////импорт таблицы
+            $('#input-excel').change(function (e) {
+                var reader = new FileReader();
+
+                reader.readAsArrayBuffer(e.target.files[0]);
+
+                reader.onload = function (e) {
+                    var data = new Uint8Array(reader.result);
+                    var wb = XLSX.read(data, { type: 'array' });
+
+                    var htmlstr = XLSX.write(wb, { sheet: "no1", type: 'binary', bookType: 'html' });
+                    $('#table_3')[0].innerHTML += htmlstr;
+
+                    //var htmlstr1	= XLSX.write(wb,{sheet:"no2", type:'binary',bookType: 'html'});
+                    //$('#table_3')[0].innerHTML += htmlstr1;
+
+                    //selectedRowToInput();
+                    //selectedRowToInputt3();
+                    //add_to_input_2_and_6();
+
+
+                    var tablet3 = document.getElementById('table_3');
+
+                    for (var n = 1; n <= tablet3.rows.length - 1; n++) {
+                        var t3c0_ = tablet3.rows[n].cells[0].innerHTML;
+                        var t3c1_ = tablet3.rows[n].cells[1].innerHTML;
+                        var t3c2_ = tablet3.rows[n].cells[2].innerHTML;
+                        var t3c3_ = tablet3.rows[n].cells[3].innerHTML;
+                        var t3c4_ = tablet3.rows[n].cells[4].innerHTML;
+                        var t3c5_ = tablet3.rows[n].cells[5].innerHTML;
+                        var t3c6_ = tablet3.rows[n].cells[6].innerHTML;
+                        var t3c7_ = tablet3.rows[n].cells[7].innerHTML;
+                        var t3c8_ = tablet3.rows[n].cells[8].innerHTML;
+                        var t3c9_ = tablet3.rows[n].cells[9].innerHTML;
+                        var t3c10_ = tablet3.rows[n].cells[10].innerHTML;
+                        var t3c11_ = tablet3.rows[n].cells[11].innerHTML;
+
+
+                        tablet3.rows[n].cells[0].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#1';  //cellt31.innerHTML + ' ' + '('+ cellt32.innerHTML + ')' + '#3'
+                        tablet3.rows[n].cells[1].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#2';
+                        tablet3.rows[n].cells[2].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#3';
+                        tablet3.rows[n].cells[3].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#4';
+                        tablet3.rows[n].cells[4].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#5';
+                        tablet3.rows[n].cells[5].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#6';
+                        tablet3.rows[n].cells[6].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#7';
+                        tablet3.rows[n].cells[7].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#8';
+                        tablet3.rows[n].cells[8].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#9';
+                        tablet3.rows[n].cells[9].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#10'
+                        tablet3.rows[n].cells[10].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#11';
+                        tablet3.rows[n].cells[11].id = t3c0_ + ' ' + '(' + t3c1_ + ')' + '#12';
+
+                    };
+                }
+            });
+
+            var rIndext3, tablet3 = document.getElementById("table_3");
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////добавление строк	таблицы 1
+
+            function cable_count() {
+
+                cableLegthSummUN = 0;
+                cableLegthSummGN = 0;
+
+                var tablet1 = document.getElementById("table_1");
+                for (var c = tablet1.rows.length - 1; c > 2; c--) {
+                    document.getElementById("table_1").deleteRow(c);
+                    var tablet1 = document.getElementById("table_1");
+                }
+
+                for (var i = 1; i <= tablet3.rows.length - 1; i++) {
+                    add_room(i);
+                }
+            };
+
+            var cableLegthSummUN = 0;
+            var cableLegthSummGN = 0;
+
+
+            function add_room(numbOfRoom) {
+
+                var tablet1 = document.getElementById("table_1");
+                var tablet3 = document.getElementById('table_3');
+                var t3c0 = tablet3.rows[numbOfRoom].cells[0].innerHTML;
+                var t3c1 = tablet3.rows[numbOfRoom].cells[1].innerHTML;
+                var t3c2 = tablet3.rows[numbOfRoom].cells[2].innerHTML;
+                var t3c3 = tablet3.rows[numbOfRoom].cells[3].innerHTML;
+                var t3c4 = tablet3.rows[numbOfRoom].cells[4].innerHTML;
+                var t3c5 = tablet3.rows[numbOfRoom].cells[5].innerHTML;
+                var t3c6 = tablet3.rows[numbOfRoom].cells[6].innerHTML;
+                var t3c7 = tablet3.rows[numbOfRoom].cells[7].innerHTML;
+                var t3c8 = tablet3.rows[numbOfRoom].cells[8].innerHTML;
+                var t3c9 = tablet3.rows[numbOfRoom].cells[9].innerHTML;
+                var t3c10 = tablet3.rows[numbOfRoom].cells[10].innerHTML;
+                var t3c11 = tablet3.rows[numbOfRoom].cells[11].innerHTML;
+
+                function add_rowt1() {
+                    var rowt1 = tablet1.insertRow(-1);
+                    for (var i = 0; i < tablet1.rows[2].cells.length + 1; i++) { rowt1.insertCell(i); }
+                };
+
+                var setidt3cell1 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#1');
+                var setidt3cell2 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#2');
+                var setidt3cell3 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#3');
+                var setidt3cell4 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#4');
+                var setidt3cell5 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#5');
+                var setidt3cell6 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#6');
+                var setidt3cell7 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#7');
+                var setidt3cell8 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#8');
+                var setidt3cell9 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#9');
+                var setidt3cell10 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#10');
+                var setidt3cell11 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#11');
+                var setidt3cell12 = document.getElementById(t3c0 + ' ' + '(' + t3c1 + ')' + '#12');
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////// расчет длины кабеля
+
+
+
+                var servCoordX = document.getElementById(setidt3cell12.innerHTML + '#4');
+                var servCoordY = document.getElementById(setidt3cell12.innerHTML + '#5');
+                var servH = document.getElementById(setidt3cell12.innerHTML + '#7');
+                var servS = document.getElementById(setidt3cell12.innerHTML + '#3');
+
+                var cableLegthCount_H = Math.abs(t3c6) + Math.abs(servH.innerHTML) + 4.5;   												// Н серверной + Hрозекти + выпуск у шкафа
+                var cableLegthCount_delta_X = (Math.abs(Math.abs(t3c3) - Math.abs(servCoordX.innerHTML))).toFixed(1);     					// X розетки - X шкафа
+                var cableLegthCount_delta_Y1 = (Math.abs(Math.abs(t3c5) - Math.abs(servCoordY.innerHTML))).toFixed(1); 						// Y0 - Y розетки
+                var cableLegthCount_delta_Y2 = (Math.abs(Math.abs(t3c5) - Math.abs(t3c4))).toFixed(1); 										// Y0 - Y шкафа
+                var cableLegthCount_S2 = (Math.sqrt(Math.abs(servS.innerHTML)) + Math.sqrt(Math.abs(t3c2))).toFixed(1);						// Учет площади
+
+                //console.log ('cableLegthCount_H=', cableLegthCount_H);
+                //console.log ('cableLegthCount_delta_X=', cableLegthCount_delta_X);
+                //console.log ('cableLegthCount_delta_Y1=', cableLegthCount_delta_Y1);
+                //console.log ('cableLegthCount_delta_Y2=', cableLegthCount_delta_Y2);
+                //console.log ('cableLegthCount_S2=', cableLegthCount_S2);
+
+                var cableLegthCount = parseFloat(cableLegthCount_H) + parseFloat(cableLegthCount_delta_X) + parseFloat(cableLegthCount_delta_Y1) + parseFloat(cableLegthCount_delta_Y2) + parseFloat(cableLegthCount_S2);
+
+                //console.log ('cableLegthCount =', cableLegthCount);
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////// RJ45
+
+
+
+                if (t3c7 > 0) {
+                    for (var l = 1; l <= t3c7; l++) {
+                        add_rowt1();
+                        var nmbRptOfCable = tableSearchByCol('UN ', "table_1", 0, 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[0].innerHTML = 'UN ' + (nmbRptOfCable + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[1].innerHTML = t3c11;
+                        tablet1.rows[tablet1.rows.length - 1].cells[2].innerHTML = 'Шкаф СКС';
+                        tablet1.rows[tablet1.rows.length - 1].cells[3].innerHTML = 'Вывод';
+                        tablet1.rows[tablet1.rows.length - 1].cells[4].innerHTML = '4,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML = t3c0 + ' ' + '(' + t3c1 + ')';
+                        var xxx = tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML;
+                        var cont_RJ45 = "Розетка СКС 1п." + " " + xxx.slice((xxx.indexOf("(") + 1), xxx.indexOf(")")) + ".";
+                        var nmbRptRJ45 = tableSearchByCol(cont_RJ45, "table_1", 6, 2);
+                        tablet1.rows[tablet1.rows.length - 1].cells[6].innerHTML = cont_RJ45 + (nmbRptRJ45 + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[7].innerHTML = 'Подрозетник';
+                        tablet1.rows[tablet1.rows.length - 1].cells[8].innerHTML = '0,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[9].innerHTML = 'Molex MT39A-504-LS';
+                        var cableLegthSummRJ45 = (cableLegthCount + 0.5).toFixed(1) /*трасса + выпуск у розетки*/;
+                        tablet1.rows[tablet1.rows.length - 1].cells[10].innerHTML = cableLegthSummRJ45.replace(/\./g, ',');
+                        cableLegthSummUN += parseFloat(cableLegthSummRJ45);
+                        //console.log('cableLegthSummUN=', (cableLegthSummUN).toFixed(1).replace(/\./g,','));
+                    }
+                }
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////// 2xRJ45
+
+                if (t3c8 > 0) {
+                    for (var l = 1; l <= t3c8; l++) {
+
+                        add_rowt1();
+                        var nmbRptOfCable = tableSearchByCol('UN ', "table_1", 0, 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[0].innerHTML = 'UN ' + (nmbRptOfCable + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[1].innerHTML = t3c11;
+                        tablet1.rows[tablet1.rows.length - 1].cells[2].innerHTML = 'Шкаф СКС';
+                        tablet1.rows[tablet1.rows.length - 1].cells[3].innerHTML = 'Вывод';
+                        tablet1.rows[tablet1.rows.length - 1].cells[4].innerHTML = '4,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML = t3c0 + ' ' + '(' + t3c1 + ')';
+                        var xxx = tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML;
+                        var cont_2RJ45 = "Розeтка СКС 2п." + " " + xxx.slice((xxx.indexOf("(") + 1), xxx.indexOf(")")) + ".";
+                        var nmbRpt2RJ45 = tableSearchByColDoubles(cont_2RJ45, "table_1", 6, 2);
+                        tablet1.rows[tablet1.rows.length - 1].cells[6].innerHTML = cont_2RJ45 + (nmbRpt2RJ45 + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[7].innerHTML = 'Подрозетник';
+                        tablet1.rows[tablet1.rows.length - 1].cells[8].innerHTML = '0,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[9].innerHTML = 'Molex MT39A-504-LS';
+                        var cableLegthSumm2xRJ45 = (cableLegthCount + 0.5).toFixed(1) /*трасса + выпуск у розетки*/;
+                        tablet1.rows[tablet1.rows.length - 1].cells[10].innerHTML = cableLegthSumm2xRJ45.replace(/\./g, ',');
+                        cableLegthSummUN += parseFloat(cableLegthSumm2xRJ45);
+                        //console.log('cableLegthSummUN=', (cableLegthSummUN).toFixed(1).replace(/\./g,','));
+
+                        add_rowt1();
+                        var nmbRptOfCable = tableSearchByCol('UN ', "table_1", 0, 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[0].innerHTML = 'UN ' + (nmbRptOfCable + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[1].innerHTML = t3c11;
+                        tablet1.rows[tablet1.rows.length - 1].cells[2].innerHTML = 'Шкаф СКС';
+                        tablet1.rows[tablet1.rows.length - 1].cells[3].innerHTML = 'Вывод';
+                        tablet1.rows[tablet1.rows.length - 1].cells[4].innerHTML = '4,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML = t3c0 + ' ' + '(' + t3c1 + ')';
+                        tablet1.rows[tablet1.rows.length - 1].cells[6].innerHTML = cont_2RJ45 + (nmbRpt2RJ45 + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[7].innerHTML = 'Подрозетник';
+                        tablet1.rows[tablet1.rows.length - 1].cells[8].innerHTML = '0,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[9].innerHTML = 'Molex MT39A-504-LS';
+                        var cableLegthSumm2xRJ45 = (cableLegthCount + 0.5).toFixed(1) /*трасса + выпуск у розетки*/;
+                        tablet1.rows[tablet1.rows.length - 1].cells[10].innerHTML = cableLegthSumm2xRJ45.replace(/\./g, ',');
+                        cableLegthSummUN += parseFloat(cableLegthSumm2xRJ45);
+                        //console.log('cableLegthSummUN=', (cableLegthSummUN).toFixed(1).replace(/\./g,','));
+                    }
+                }
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////// TV
+
+                if (t3c9 > 0) {
+                    for (var l = 1; l <= t3c9; l++) {
+                        add_rowt1();
+                        var nmbRptOfCable = tableSearchByCol('GN ', "table_1", 0, 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[0].innerHTML = 'GN ' + (nmbRptOfCable + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[1].innerHTML = t3c11;
+                        tablet1.rows[tablet1.rows.length - 1].cells[2].innerHTML = 'Шкаф СКС';
+                        tablet1.rows[tablet1.rows.length - 1].cells[3].innerHTML = 'Вывод';
+                        tablet1.rows[tablet1.rows.length - 1].cells[4].innerHTML = '4,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML = t3c0 + ' ' + '(' + t3c1 + ')';
+                        var xxx = tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML;
+                        var cont_TV = "Розетка TV" + " " + xxx.slice((xxx.indexOf("(") + 1), xxx.indexOf(")")) + ".";
+                        var nmbRptTV = tableSearchByCol(cont_TV, "table_1", 6, 2);
+                        tablet1.rows[tablet1.rows.length - 1].cells[6].innerHTML = cont_TV + (nmbRptTV + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[7].innerHTML = 'Подрозетник';
+                        tablet1.rows[tablet1.rows.length - 1].cells[8].innerHTML = '0,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[9].innerHTML = 'Cablink DG EXTREME 7 HD';
+                        var cableLegthSummTV = (cableLegthCount + 0.5 - 1.5).toFixed(1) /*трасса + выпуск у розетки - высота телевизора*/;
+                        tablet1.rows[tablet1.rows.length - 1].cells[10].innerHTML = cableLegthSummTV.replace(/\./g, ',');
+                        cableLegthSummGN += parseFloat(cableLegthSummTV);
+                        //console.log('cableLegthSummGN=', (cableLegthSummGN).toFixed(1).replace(/\./g,','));
+                    }
+                }
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////// WI-FI
+
+                if (t3c10 > 0) {
+                    for (var l = 1; l <= t3c10; l++) {
+                        add_rowt1();
+                        var nmbRptOfCable = tableSearchByCol('UN ', "table_1", 0, 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[0].innerHTML = 'UN ' + (nmbRptOfCable + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[1].innerHTML = t3c11;
+                        tablet1.rows[tablet1.rows.length - 1].cells[2].innerHTML = 'Шкаф СКС';
+                        tablet1.rows[tablet1.rows.length - 1].cells[3].innerHTML = 'Вывод';
+                        tablet1.rows[tablet1.rows.length - 1].cells[4].innerHTML = '4,5';
+                        tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML = t3c0 + ' ' + '(' + t3c1 + ')';
+                        var xxx = tablet1.rows[tablet1.rows.length - 1].cells[5].innerHTML;
+                        var cont_WIFI = "WI-FI" + " " + xxx.slice((xxx.indexOf("(") + 1), xxx.indexOf(")")) + ".";
+                        var nmbRptWIFI = tableSearchByCol(cont_WIFI, "table_1", 6, 2);
+                        tablet1.rows[tablet1.rows.length - 1].cells[6].innerHTML = cont_WIFI + (nmbRptWIFI + 1);
+                        tablet1.rows[tablet1.rows.length - 1].cells[7].innerHTML = 'Вывод';
+                        tablet1.rows[tablet1.rows.length - 1].cells[8].innerHTML = '1';
+                        tablet1.rows[tablet1.rows.length - 1].cells[9].innerHTML = 'Molex MT39A-504-LS';
+                        var cableLegthSummWiFi = (cableLegthCount + 1 - Math.abs(servH.innerHTML)).toFixed(1) /*трасса + выпуск у WI-FI точки* - высота потолка*/;
+                        tablet1.rows[tablet1.rows.length - 1].cells[10].innerHTML = cableLegthSummWiFi.replace(/\./g, ',');
+                        cableLegthSummUN += parseFloat(cableLegthSummWiFi);
+                        //console.log('cableLegthSummUN=', (cableLegthSummUN).toFixed(1).replace(/\./g,','));
+                    }
+                }
+
+                var comLengthUN = document.getElementById("comLengthUN").innerHTML = (cableLegthSummUN).toFixed(1).replace(/\./g, ',');
+                var comLengthGN = document.getElementById("comLengthGN").innerHTML = (cableLegthSummGN).toFixed(1).replace(/\./g, ',');
+
+
+            };
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////добавление комнат в шкаф СКС
+
+            function add_to_input_2_and_6() {
+
+                var NameRoom1 = document.getElementById("parametr_312");
+
+                NameRoom1.options.length = 0;
+
+                for (var y = 1; y < tablet3.rows.length; ++y) {
+                    var q__1 = tablet3.rows[y].cells[0].innerHTML;
+                    var q__2 = tablet3.rows[y].cells[1].innerHTML;
+
+                    var NewRoom1 = document.createElement("option");
+                    NewRoom1.setAttribute("id", "№" + y + ". " + q__1 + " (" + q__2 + ")");
+                    NewRoom1.text = q__1 + " (" + q__2 + ")";
+                    NameRoom1.add(NewRoom1)
+                }
+            };
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////// добавление строк таблицы 3
+
+            function add_rowt3() {
+
+                var tablet3 = document.getElementById("table_3");
+                var par_t31 = document.getElementById("parametr_t31").value;
+                var par_t32 = document.getElementById("parametr_t32").value;
+                var par_t33 = document.getElementById("parametr_t33").value;
+                var par_t34 = document.getElementById("parametr_t34").value;
+                var par_t35 = document.getElementById("parametr_t35").value;
+                var par_t36 = document.getElementById("parametr_t36").value;
+                var par_t37 = document.getElementById("parametr_t37").value;
+                var par_t38 = document.getElementById("parametr_t38").value;
+                var par_t39 = document.getElementById("parametr_t39").value;
+                var par_t310 = document.getElementById("parametr_t310").value;
+                var par_t311 = document.getElementById("parametr_t311").value;
+
+                if (rIndext3 === undefined || rIndext3 < 1) {
+                    var rowt3 = tablet3.insertRow(-1);
+                    rIndext3 = 0;
+                }
+
+                if (rIndext3 > 0) {
+                    rIndext3 += 1;
+                    var rowt3 = tablet3.insertRow(rIndext3);
+                }
+                var cellt31 = rowt3.insertCell(0);
+                var cellt32 = rowt3.insertCell(1);
+                var cellt33 = rowt3.insertCell(2);
+                var cellt34 = rowt3.insertCell(3);
+                var cellt35 = rowt3.insertCell(4);
+                var cellt36 = rowt3.insertCell(5);
+                var cellt37 = rowt3.insertCell(6);
+                var cellt38 = rowt3.insertCell(7);
+                var cellt39 = rowt3.insertCell(8);
+                var cellt310 = rowt3.insertCell(9);
+                var cellt311 = rowt3.insertCell(10);
+                var cellt312 = rowt3.insertCell(11);
+
+
+                var nmbRptOffRoom = tableSearchByCol(par_t32, "table_3", 1, 1);
+                if (nmbRptOffRoom > 0) {
+                    cellt32.innerHTML = par_t32 + "-" + nmbRptOffRoom
+                } else {
+                    cellt32.innerHTML = par_t32
+                };
+                cellt31.innerHTML = par_t31;
+                cellt31.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#1';
+                cellt32.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#2';
+                cellt33.innerHTML = par_t33;
+                cellt33.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#3';
+                cellt34.innerHTML = par_t34;
+                cellt34.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#4';
+                cellt35.innerHTML = par_t35;
+                cellt35.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#5';
+                cellt36.innerHTML = par_t36;
+                cellt36.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#6';
+                cellt37.innerHTML = par_t37;
+                cellt37.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#7';
+                cellt38.innerHTML = par_t38;
+                cellt38.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#8';
+                cellt39.innerHTML = par_t39;
+                cellt39.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#9';
+                cellt310.innerHTML = par_t310;
+                cellt310.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#10';
+                cellt311.innerHTML = par_t311;
+                cellt311.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#11';
+                cellt312.innerHTML = document.getElementById("parametr_312").value;
+                cellt312.id = cellt31.innerHTML + ' ' + '(' + cellt32.innerHTML + ')' + '#12';
+
+                selectedRowToInputt3();
+
+                for (var b1 = 1; b1 < tablet3.rows.length; b1++) {
+                    tablet3.rows[b1].cells[0].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[1].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[2].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[3].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[4].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[5].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[6].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[7].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[8].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[9].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[10].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[11].style.backgroundColor = "#F5F0F3";
+                    tablet3.rows[b1].cells[0].style.height = "20px";
+                }
+
+                add_to_input_2_and_6();
+                if (cellt312.innerHTML === '') {
+                    cellt312.innerHTML = document.getElementById("parametr_312").value;
+                }
+            };
+
+            //////////////////////////////////////////////////////////////////////////////////////////////// удаление строк таблицы 3
+
+            function deleteRowt3() {
+                var tlength = tablet3.rows.length
+
+                if (tlength > 2) {
+                    if (rIndext3 < 1 || rIndext3 === undefined) { rIndext3 = tlength - 1 }
+                    document.getElementById("table_3").deleteRow(rIndext3);
+                    rIndext3 = tlength - 2;
+                    selectedRowToInputt3();
+                    for (var b1 = 1; b1 < tablet3.rows.length; b1++) {
+                        tablet3.rows[b1].cells[0].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[1].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[2].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[3].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[4].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[5].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[6].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[7].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[8].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[9].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[10].style.backgroundColor = "#F5F0F3";
+                        tablet3.rows[b1].cells[11].style.backgroundColor = "#F5F0F3";
+                    }
+                    add_to_input_2_and_6()
+                }
+            };
+
+            //////////////////////////////////////////////////////////////////////////////////////////////// введение данных в инпут, при выборе строки таблицы 3
+
+            function selectedRowToInputt3() {
+                var tlength = tablet3.rows.length
+
+                for (var k = 0; k < tlength; k++) {
+                    tablet3.rows[k].onclick = function () {
+                        rIndext3 = this.rowIndex;
+                        for (var b = 0; b < tlength; b++) {
+                            tablet3.rows[b].cells[0].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[1].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[2].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[3].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[4].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[5].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[6].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[7].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[8].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[9].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[10].style.backgroundColor = "white";
+                            tablet3.rows[b].cells[11].style.backgroundColor = "white";
+                        }
+                        if (rIndext3 > 0) {
+                            tablet3.rows[rIndext3].cells[0].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[1].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[2].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[3].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[4].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[5].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[6].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[7].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[8].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[9].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[10].style.backgroundColor = "#E0C3D8";
+                            tablet3.rows[rIndext3].cells[11].style.backgroundColor = "#E0C3D8";
+
+                            document.getElementById("parametr_t31").value = this.cells[0].innerHTML;
+                            document.getElementById("parametr_t32").value = this.cells[1].innerHTML;
+                            document.getElementById("parametr_t33").value = this.cells[2].innerHTML;
+                            document.getElementById("parametr_t34").value = this.cells[3].innerHTML;
+                            document.getElementById("parametr_t35").value = this.cells[4].innerHTML;
+                            document.getElementById("parametr_t36").value = this.cells[5].innerHTML;
+                            document.getElementById("parametr_t37").value = this.cells[6].innerHTML;
+                            document.getElementById("parametr_t38").value = this.cells[7].innerHTML;
+                            document.getElementById("parametr_t39").value = this.cells[8].innerHTML;
+                            document.getElementById("parametr_t310").value = this.cells[9].innerHTML;
+                            document.getElementById("parametr_t311").value = this.cells[10].innerHTML;
+                        }
+                    }
+                }
+            }
+            selectedRowToInputt3();
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////редактирование строк	таблицы 3
+
+            function editHtmlTbleSelectedRowt3() {
+                if (rIndext3 > 0) {
+                    var parametrt31 = document.getElementById("parametr_t31").value,
+                        parametrt32 = document.getElementById("parametr_t32").value,
+                        parametrt33 = document.getElementById("parametr_t33").value,
+                        parametrt34 = document.getElementById("parametr_t34").value,
+                        parametrt35 = document.getElementById("parametr_t35").value,
+                        parametrt36 = document.getElementById("parametr_t36").value,
+                        parametrt37 = document.getElementById("parametr_t37").value;
+                    parametrt38 = document.getElementById("parametr_t38").value;
+                    parametrt39 = document.getElementById("parametr_t39").value;
+                    parametrt310 = document.getElementById("parametr_t310").value;
+                    parametrt311 = document.getElementById("parametr_t311").value;
+
+                    tablet3.rows[rIndext3].cells[0].innerHTML = parametrt31;
+                    tablet3.rows[rIndext3].cells[1].innerHTML = parametrt32;
+                    tablet3.rows[rIndext3].cells[2].innerHTML = parametrt33;
+                    tablet3.rows[rIndext3].cells[3].innerHTML = parametrt34;
+                    tablet3.rows[rIndext3].cells[4].innerHTML = parametrt35;
+                    tablet3.rows[rIndext3].cells[5].innerHTML = parametrt36;
+                    tablet3.rows[rIndext3].cells[6].innerHTML = parametrt37;
+                    tablet3.rows[rIndext3].cells[7].innerHTML = parametrt38;
+                    tablet3.rows[rIndext3].cells[8].innerHTML = parametrt39;
+                    tablet3.rows[rIndext3].cells[9].innerHTML = parametrt310;
+                    tablet3.rows[rIndext3].cells[10].innerHTML = parametrt311;
+                    tablet3.rows[rIndext3].cells[11].innerHTML = document.getElementById("parametr_312").value;
+                    add_to_input_2_and_6()
+                }
+            }
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////функция подсчета одинакового контента в колонке таблицы
+
+            function tableSearchByCol(cont, tblId, nmbCol, nmbRow) {
+                var tbl = document.getElementById(tblId);
+                var nmbRpt = 0;
+                if (nmbRow > tbl.rows.length) { nmbRow = tbl.rows.length }
+                for (var i = nmbRow; i < tbl.rows.length; i++) {
+                    var contReg = tbl.rows[i].cells[nmbCol].innerHTML.slice(0, cont.length);
+                    if (contReg === cont) {
+                        nmbRpt++
+                    }
+                }
+                return nmbRpt
+            };
+
+            function tableSearchByColDoubles(cont, tblId, nmbCol, nmbRow) {
+                var tbl = document.getElementById(tblId);
+                var nmbRpt = 0;
+                if (nmbRow > tbl.rows.length) { nmbRow = tbl.rows.length }
+                for (var i = nmbRow; i < tbl.rows.length; i++) {
+                    if ((i % 2) === 0) {
+                        var contReg = tbl.rows[i].cells[nmbCol].innerHTML.slice(0, cont.length);
+                        if (contReg === cont) {
+                            nmbRpt++
+                        }
+                    }
+                }
+                return nmbRpt
+            };
+
+        </script>
+</body>
+</html>
